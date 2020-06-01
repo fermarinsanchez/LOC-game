@@ -5,8 +5,12 @@ class Game {
       this.tick = 0
   
       this.bg = new Board(ctx)
+      this.boardLimits = new BoardLimits(ctx)
       this.player = new Player(ctx)
-    //   this.obstacles = []
+      this.waste = new Waste(ctx)
+      this.wastedEl = []
+
+      this._addWaste(this.waste, 20)
     }
   
     start() {
@@ -23,16 +27,16 @@ class Game {
   
       }, 1000 / 60)
     }
-  
     // _clearObstacles() {
     //   this.obstacles = this.obstacles.filter(b => b.isVisible())
     // }
   
-    // _addObstacle() {
-    //   if (this.tick % 100 === 0) {
-    //     this.obstacles.push(new Obstacle(this.ctx))
-    //   }
-    // }
+    _addWaste(waste,len) {
+      for (let i = 0; i < len; i++) {
+        this.wastedEl.push(new Waste(ctx))
+      }
+      return this.wastedEl
+    }
   
     _clear() {
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
@@ -40,8 +44,9 @@ class Game {
   
     _draw() {
       this.bg.draw()
+      this.boardLimits.draw()
       this.player.draw()
-    //   this.obstacles.forEach(e => e.draw())
+      this.wastedEl.forEach(e => e.draw())
     }
   
     _move() {

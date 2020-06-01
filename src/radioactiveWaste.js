@@ -1,15 +1,15 @@
-class Board {
+class Waste {
     constructor(ctx) {
         this.ctx = ctx
-
-        this.x = 0
-        this.y = 0
-
-        this.h = this.ctx.canvas.height
-        this.w = this.ctx.canvas.width
+        
+        this.x = Math.floor(Math.random() * 700 ) + 50
+        this.y = Math.floor(Math.random() * 700 ) + 50
+        
+        this.h = 50
+        this.w = 50
 
         this.img = new Image()
-        this.img.src = './img/Tablero_LOC_800_X_800.jpg'
+        this.img.src = './img/Mat_Radioactivo_28x28.jpg'
     }
 
     draw() {
@@ -21,5 +21,4 @@ class Board {
             this.h
         )
     }
-    
 }

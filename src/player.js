@@ -2,7 +2,7 @@ class Player {
     constructor(ctx) {
         this.ctx = ctx
 
-        this.x = this.ctx.canvas.width - 80
+        this.x = this.ctx.canvas.width - 200
         this.y = this.ctx.canvas.height / 2
 
         this.w = 56
@@ -14,12 +14,7 @@ class Player {
         this.img = new Image()
         this.img.src = './img/Player_LOC_28x28.jpg'
 
-        this.actions = {
-            right: false,
-            left: false,
-            up: false,
-            down: false
-        }
+        this.boardLimits = new BoardLimits(ctx)
     }
 
 
@@ -34,9 +29,21 @@ class Player {
     }
 
     checkBoardBorders() {
-        if (this.y + this.h > this.ctx.canvas.height - 100) {
-            this.y = this.ctx.canvas.height - this.h -100
-        }
+        if (this.y + this.h < this.boardLimits.y1) {
+          this.y = this.boardLimits.y1 - this.h -50
+        } 
+        
+        // if (this.y  <= 50) {
+        //   this.y = this.h
+        // }
+
+        // if (this.x + this.w > this.boardLimits.y3) {
+        //   this.x = this.boardLimits.y3 - this.w - 50
+        // }
+
+        // if (this.x  <= 50) {
+        //   this.x = this.w 
+        // }
     }
 
     move() {
@@ -70,7 +77,6 @@ class Player {
         document.addEventListener('keyup', e => {
             switch (e.keyCode) {
                 case KEY_UP:
-                  console.log('up!')
                   this.vy = 0
                   break;
                 case KEY_LEFT:
