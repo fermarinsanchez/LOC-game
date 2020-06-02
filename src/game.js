@@ -8,7 +8,7 @@ class Game {
       this.player = new Player(ctx)
       this.waste = new Waste(ctx)
       this.wastedEl = []
-      this.boardLimits = []
+      this.walls = []
 
       this._addWaste(this.waste, 20)
     }
@@ -18,8 +18,8 @@ class Game {
         this._clear()
         this._draw()
         this._move()
-        this._addBoardLimits()
-        this.checkBoardBorders()
+        this._addWalls()
+        this._checkCollisions()
         // this._addObstacle()
         // this._clearObstacles()
         // this._checkCollisions()
@@ -37,15 +37,22 @@ class Game {
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
     }
 
-    _addBoardLimits() {
-      const limits = new BoardLimits(ctx)
-
-      this.boardLimits.push(limits)
+    _addWalls() {
+      const wallTop = new Wall(ctx, 0, 0, 800, 50)
+      const wallLeft = new Wall(ctx, 0, 0, 50, 800)
+      const wallBottom = new Wall(ctx, 0, 750, 800, 50)
+      const wallRightTop = new Wall(ctx, 750, 0, 50, 350)
+      const wallRightBottom = new Wall (ctx, 750, 450, 50, 450)
+      this.walls.push(wallTop)
+      this.walls.push(wallBottom)
+      this.walls.push(wallLeft)
+      this.walls.push(wallRightTop)
+      this.walls.push(wallRightBottom)
     }
   
     _draw() {
       this.bg.draw()
-      this.boardLimits.forEach(el => el.draw())
+      this.walls.forEach(el => el.draw())
       this.wastedEl.forEach(e => e.draw())
       this.player.draw()
       
@@ -65,17 +72,17 @@ class Game {
       return this.wastedEl
     }
 
-   
+    _stopPlayer() {
+      this.x = this.x
+      this.y = this.y
+    }
 
-    checkBoardBorders() {
-
-      for ( let i = 0; i < this.boardLimits.length; i ++) {
-        console.log(this.boardLimits[i])
-        if (this.player.y + this.player.h < this.boardLimits[i].y1) {
-          
-          this.player.y = this.boardLimits[i].y1 - this.h -50
-        } 
-      }
+    _checkCollisions() {
+      this.walls.forEach(el => {
+        if (el.collide(this.player)) {
+          this._stopPlayer()
+        }
+      })
     }
     // _checkCollisions() {
     //   if (this.helicopter.isFloor()) this._gameOver()
