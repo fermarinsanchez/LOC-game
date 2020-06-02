@@ -80,7 +80,7 @@ class Game {
     _checkCollisions() {
       this.walls.forEach(el => {
         if (el.collide(this.player)) {
-          this._stopPlayer()
+          console.log('collide!!!')
         }
       })
     }
