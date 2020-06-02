@@ -14,7 +14,6 @@ class Player {
         this.img = new Image()
         this.img.src = './img/Player_LOC_28x28.jpg'
 
-        this.boardLimits = new BoardLimits(ctx)
     }
 
 
@@ -28,10 +27,17 @@ class Player {
         )
     }
 
+<<<<<<< HEAD
     checkBoardBorders() {
         if (this.y + this.h < this.boardLimits.y1) {
           this.y = this.boardLimits.y1 - this.h 
         } 
+=======
+    // checkBoardBorders() {
+    //     if (this.y + this.h < this.boardLimits.y1) {
+    //       this.y = this.boardLimits.y1 - this.h -50
+    //     } 
+>>>>>>> 6b9c617188cf6edb3795fc5542f79fcf5c531441
         
         // if (this.y  <= 50) {
         //   this.y = this.h
@@ -44,15 +50,13 @@ class Player {
         // if (this.x  <= 50) {
         //   this.x = this.w 
         // }
-    }
+    // }
 
     move() {
         this._setListeners()
         
         this.x += this.vx
         this.y += this.vy
-
-        this.checkBoardBorders()
     }
 
     _setListeners() {

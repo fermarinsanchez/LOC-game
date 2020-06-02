@@ -5,10 +5,10 @@ class Game {
       this.tick = 0
   
       this.bg = new Board(ctx)
-      this.boardLimits = new BoardLimits(ctx)
       this.player = new Player(ctx)
       this.waste = new Waste(ctx)
       this.wastedEl = []
+      this.walls = []
 
       this._addWaste(this.waste, 20)
     }
@@ -18,6 +18,8 @@ class Game {
         this._clear()
         this._draw()
         this._move()
+        this._addWalls()
+        this._checkCollisions()
         // this._addObstacle()
         // this._clearObstacles()
         // this._checkCollisions()
@@ -31,22 +33,29 @@ class Game {
     //   this.obstacles = this.obstacles.filter(b => b.isVisible())
     // }
   
-    _addWaste(waste,len) {
-      for (let i = 0; i < len; i++) {
-        this.wastedEl.push(new Waste(ctx))
-      }
-      return this.wastedEl
-    }
-  
     _clear() {
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
+    }
+
+    _addWalls() {
+      const wallTop = new Wall(ctx, 0, 0, 800, 50)
+      const wallLeft = new Wall(ctx, 0, 0, 50, 800)
+      const wallBottom = new Wall(ctx, 0, 750, 800, 50)
+      const wallRightTop = new Wall(ctx, 750, 0, 50, 350)
+      const wallRightBottom = new Wall (ctx, 750, 450, 50, 450)
+      this.walls.push(wallTop)
+      this.walls.push(wallBottom)
+      this.walls.push(wallLeft)
+      this.walls.push(wallRightTop)
+      this.walls.push(wallRightBottom)
     }
   
     _draw() {
       this.bg.draw()
-      this.boardLimits.draw()
-      this.player.draw()
+      this.walls.forEach(el => el.draw())
       this.wastedEl.forEach(e => e.draw())
+      this.player.draw()
+      
     }
   
     _move() {
@@ -55,7 +64,26 @@ class Game {
     //   this.obstacles.forEach(e => e.move())
   
     }
-  
+
+    _addWaste(waste,len) {
+      for (let i = 0; i < len; i++) {
+        this.wastedEl.push(new Waste(ctx))
+      }
+      return this.wastedEl
+    }
+
+    _stopPlayer() {
+      this.x = this.x
+      this.y = this.y
+    }
+
+    _checkCollisions() {
+      this.walls.forEach(el => {
+        if (el.collide(this.player)) {
+          this._stopPlayer()
+        }
+      })
+    }
     // _checkCollisions() {
     //   if (this.helicopter.isFloor()) this._gameOver()
     //   this.obstacles.forEach(o => {
