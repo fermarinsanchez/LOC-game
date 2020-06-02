@@ -5,10 +5,10 @@ class Game {
       this.tick = 0
   
       this.bg = new Board(ctx)
-      this.boardLimits = new BoardLimits(ctx)
       this.player = new Player(ctx)
       this.waste = new Waste(ctx)
       this.wastedEl = []
+      this.boardLimits = []
 
       this._addWaste(this.waste, 20)
     }
@@ -18,6 +18,7 @@ class Game {
         this._clear()
         this._draw()
         this._move()
+        this._addBoardLimits()
         this.checkBoardBorders()
         // this._addObstacle()
         // this._clearObstacles()
@@ -35,12 +36,19 @@ class Game {
     _clear() {
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
     }
+
+    _addBoardLimits() {
+      const limits = new BoardLimits(ctx)
+
+      this.boardLimits.push(limits)
+    }
   
     _draw() {
       this.bg.draw()
-      this.boardLimits.draw()
-      this.player.draw()
+      this.boardLimits.forEach(el => el.draw())
       this.wastedEl.forEach(e => e.draw())
+      this.player.draw()
+      
     }
   
     _move() {
@@ -56,12 +64,18 @@ class Game {
       }
       return this.wastedEl
     }
-  
+
+   
+
     checkBoardBorders() {
-      if (this.player.y + this.player.h < this.boardLimits.y1) {
-        console.log('here')
-        this.player.y = this.boardLimits.y1 - this.h -50
-      } 
+
+      for ( let i = 0; i < this.boardLimits.length; i ++) {
+        console.log(this.boardLimits[i])
+        if (this.player.y + this.player.h < this.boardLimits[i].y1) {
+          
+          this.player.y = this.boardLimits[i].y1 - this.h -50
+        } 
+      }
     }
     // _checkCollisions() {
     //   if (this.helicopter.isFloor()) this._gameOver()
