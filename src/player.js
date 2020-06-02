@@ -27,17 +27,16 @@ class Player {
         )
     }
 
-<<<<<<< HEAD
-    checkBoardBorders() {
-        if (this.y + this.h < this.boardLimits.y1) {
-          this.y = this.boardLimits.y1 - this.h 
-        } 
-=======
+
+    // checkBoardBorders() {
+    //     if (this.y + this.h < this.boardLimits.y1) {
+    //       this.y = this.boardLimits.y1 - this.h 
+    //     } 
+
     // checkBoardBorders() {
     //     if (this.y + this.h < this.boardLimits.y1) {
     //       this.y = this.boardLimits.y1 - this.h -50
     //     } 
->>>>>>> 6b9c617188cf6edb3795fc5542f79fcf5c531441
         
         // if (this.y  <= 50) {
         //   this.y = this.h

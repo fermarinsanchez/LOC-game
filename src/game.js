@@ -38,11 +38,11 @@ class Game {
     }
 
     _addWalls() {
-      const wallTop = new Wall(ctx, 0, 0, 800, 50)
-      const wallLeft = new Wall(ctx, 0, 0, 50, 800)
-      const wallBottom = new Wall(ctx, 0, 750, 800, 50)
-      const wallRightTop = new Wall(ctx, 750, 0, 50, 350)
-      const wallRightBottom = new Wall (ctx, 750, 450, 50, 450)
+      const wallTop = new Wall(ctx, 0, 0, 800, 50, 'top')
+      const wallLeft = new Wall(ctx, 0, 0, 50, 800, 'left')
+      const wallBottom = new Wall(ctx, 0, 750, 800, 50, 'bottom')
+      const wallRightTop = new Wall(ctx, 750, 0, 50, 350, 'right')
+      const wallRightBottom = new Wall (ctx, 750, 450, 50, 450, 'right')
       this.walls.push(wallTop)
       this.walls.push(wallBottom)
       this.walls.push(wallLeft)
@@ -72,15 +72,30 @@ class Game {
       return this.wastedEl
     }
 
-    _stopPlayer() {
-      this.x = this.x
-      this.y = this.y
+    _stopPlayer(e) {
+      switch(e.side) {
+        case 'top':
+          this.player.y = e.h 
+          this.vy = 0
+          break;
+        case 'bottom':
+          this.player.y = this.ctx.canvas.height - e.h - this.player.h
+          this.vy = 0
+          break;
+        case 'left':
+          this.player.x = e.w
+          this.xy = 0
+          break;
+        case 'right':
+          this.player.x = this.ctx.canvas.width - e.w - this.player.w
+          break;
+      }
     }
 
     _checkCollisions() {
       this.walls.forEach(el => {
-        if (el.collide(this.player)) {
-          this._stopPlayer()
+        if (el.collide(this.player).colission) {
+          this._stopPlayer(el)
         }
       })
     }
