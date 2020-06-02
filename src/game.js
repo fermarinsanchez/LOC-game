@@ -5,10 +5,14 @@ class Game {
       this.tick = 0
   
       this.bg = new Board(ctx)
+      this.nucleus = new Nucleus(ctx)
       this.player = new Player(ctx)
       this.waste = new Waste(ctx)
       this.wastedEl = []
       this.walls = []
+
+      this.score = 0
+      
 
       this._addWaste(this.waste, 10)
     }
@@ -21,6 +25,7 @@ class Game {
         this._addWalls()
         this._checkCollisions()
         this._pickWaste()
+        this._wasteInNucleus()
         // this._clearObstacles()
         // this._checkCollisions()
         // if (this.tick++ >= 10000) {
@@ -55,6 +60,7 @@ class Game {
       this.walls.forEach(el => el.draw())
       this.wastedEl.forEach(e => e.draw())
       this.player.draw()
+      this.nucleus.draw()
       
     }
   
@@ -108,12 +114,19 @@ class Game {
             if (index > -1) { this.wastedEl.splice(index, 1) }
             this.player.takeWaste = true
           }
-
-          
-          
-          
         }
       })
+    }
+
+    _wasteInNucleus() {
+      if (this.nucleus.collide(this.player) && this.player.takeWaste) {
+        this.score += 50
+        this.player.takeWaste = false
+        const gameScore1 = document.querySelector('#score-1')
+        gameScore1.innerText = `${this.score}`
+
+        
+      }
     }
   
     // _gameOver() {
