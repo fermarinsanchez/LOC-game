@@ -30,7 +30,7 @@ class Player {
 
     checkBoardBorders() {
         if (this.y + this.h < this.boardLimits.y1) {
-          this.y = this.boardLimits.y1 - this.h -50
+          this.y = this.boardLimits.y1 - this.h 
         } 
         
         // if (this.y  <= 50) {
