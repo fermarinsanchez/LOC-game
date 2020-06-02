@@ -2,8 +2,8 @@ class Waste {
     constructor(ctx) {
         this.ctx = ctx
         
-        this.x = Math.floor(Math.random() * 700 ) + 50
-        this.y = Math.floor(Math.random() * 700 ) + 50
+        this.x = Math.floor(Math.random() * 650 ) + 55
+        this.y = Math.floor(Math.random() * 650 ) + 55
         
         this.h = 50
         this.w = 50
@@ -20,5 +20,12 @@ class Waste {
             this.w,
             this.h
         )
+    }
+
+    collide(el) {
+        const collideX = el.x + el.w > this.x && el.x < this.x + this.w
+        const collideY = el.y < this.y + this.h && el.y + el.h > this.y
+
+        return collideX && collideY
     }
 }

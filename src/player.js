@@ -2,7 +2,7 @@ class Player {
     constructor(ctx) {
         this.ctx = ctx
 
-        this.x = this.ctx.canvas.width - 200
+        this.x = this.ctx.canvas.width - 50
         this.y = this.ctx.canvas.height / 2
 
         this.w = 56
@@ -13,6 +13,8 @@ class Player {
 
         this.img = new Image()
         this.img.src = './img/Player_LOC_28x28.jpg'
+
+        this.takeWaste = false
 
     }
 

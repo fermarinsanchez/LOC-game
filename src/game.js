@@ -10,7 +10,7 @@ class Game {
       this.wastedEl = []
       this.walls = []
 
-      this._addWaste(this.waste, 20)
+      this._addWaste(this.waste, 10)
     }
   
     start() {
@@ -20,7 +20,7 @@ class Game {
         this._move()
         this._addWalls()
         this._checkCollisions()
-        // this._addObstacle()
+        this._pickWaste()
         // this._clearObstacles()
         // this._checkCollisions()
         // if (this.tick++ >= 10000) {
@@ -41,8 +41,8 @@ class Game {
       const wallTop = new Wall(ctx, 0, 0, 800, 50, 'top')
       const wallLeft = new Wall(ctx, 0, 0, 50, 800, 'left')
       const wallBottom = new Wall(ctx, 0, 750, 800, 50, 'bottom')
-      const wallRightTop = new Wall(ctx, 750, 0, 50, 350, 'right')
-      const wallRightBottom = new Wall (ctx, 750, 450, 50, 450, 'right')
+      const wallRightTop = new Wall(ctx, 750, 0, 50, 300, 'right')
+      const wallRightBottom = new Wall (ctx, 750, 500, 50, 450, 'right')
       this.walls.push(wallTop)
       this.walls.push(wallBottom)
       this.walls.push(wallLeft)
@@ -99,16 +99,22 @@ class Game {
         }
       })
     }
-    // _checkCollisions() {
-    //   if (this.helicopter.isFloor()) this._gameOver()
-    //   this.obstacles.forEach(o => {
-    //     const colX = this.helicopter.x + this.helicopter.w > o.x && this.helicopter.x < o.x + o.w
-    //     const colY = this.helicopter.y + this.helicopter.h > o.y && this.helicopter.y < o.y + o.h 
-    //     if (colX && colY) {
-    //       this._gameOver()
-    //     }
-    //   })
-    // }
+    
+    _pickWaste() {
+      this.wastedEl.forEach(el => {
+        if (el.collide(this.player)) {
+          if(!this.player.takeWaste) {
+            const index = this.wastedEl.indexOf(el)
+            if (index > -1) { this.wastedEl.splice(index, 1) }
+            this.player.takeWaste = true
+          }
+
+          
+          
+          
+        }
+      })
+    }
   
     // _gameOver() {
     //   clearInterval(this.intervalId)
