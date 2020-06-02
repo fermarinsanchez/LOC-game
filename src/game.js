@@ -94,13 +94,8 @@ class Game {
 
     _checkCollisions() {
       this.walls.forEach(el => {
-<<<<<<< HEAD
         if (el.collide(this.player).colission) {
           this._stopPlayer(el)
-=======
-        if (el.collide(this.player)) {
-          console.log('collide!!!')
->>>>>>> fd0570068862382bc8359b6f3bd832a3782fbb49
         }
       })
     }
