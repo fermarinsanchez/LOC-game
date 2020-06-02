@@ -18,6 +18,7 @@ class Game {
         this._clear()
         this._draw()
         this._move()
+        this.checkBoardBorders()
         // this._addObstacle()
         // this._clearObstacles()
         // this._checkCollisions()
@@ -30,13 +31,6 @@ class Game {
     // _clearObstacles() {
     //   this.obstacles = this.obstacles.filter(b => b.isVisible())
     // }
-  
-    _addWaste(waste,len) {
-      for (let i = 0; i < len; i++) {
-        this.wastedEl.push(new Waste(ctx))
-      }
-      return this.wastedEl
-    }
   
     _clear() {
       this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height)
@@ -55,7 +49,20 @@ class Game {
     //   this.obstacles.forEach(e => e.move())
   
     }
+
+    _addWaste(waste,len) {
+      for (let i = 0; i < len; i++) {
+        this.wastedEl.push(new Waste(ctx))
+      }
+      return this.wastedEl
+    }
   
+    checkBoardBorders() {
+      if (this.player.y + this.player.h < this.boardLimits.y1) {
+        console.log('here')
+        this.player.y = this.boardLimits.y1 - this.h -50
+      } 
+    }
     // _checkCollisions() {
     //   if (this.helicopter.isFloor()) this._gameOver()
     //   this.obstacles.forEach(o => {
