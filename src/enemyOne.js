@@ -1,15 +1,19 @@
-class Waste {
+class ChemicalPeople {
     constructor(ctx) {
         this.ctx = ctx
         
-        this.x = Math.floor(Math.random() * 650 ) + 55
-        this.y = Math.floor(Math.random() * 650 ) + 55
-        
-        this.h = 50
-        this.w = 50
+        this.x = Math.floor(Math.random() * (this.ctx.canvas.width - 200)) 
+        console.log(this.x)
+        this.y = 100
+
+        this.w = 90
+        this.h = 150
+
+        this.vx = 0
+        this.vy = 5 
 
         this.img = new Image()
-        this.img.src = './img/Waste-in-board.png'
+        this.img.src = './img/creeper.png'
     }
 
     draw() {
@@ -22,10 +26,14 @@ class Waste {
         )
     }
 
+    move() {
+        this.y += this.vy
+    }
+
     collide(el) {
         const collideX = el.x + el.w > this.x && el.x < this.x + this.w
         const collideY = el.y < this.y + this.h && el.y + el.h > this.y
 
-        return collideX && collideY
+        return  collideX && collideY     
     }
 }

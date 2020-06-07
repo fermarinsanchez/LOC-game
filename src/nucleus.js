@@ -20,7 +20,8 @@ class Nucleus {
 
     collide(el) {
         const collideX = el.x + el.w > this.x && el.x < this.x + this.w
-        return  collideX 
+        const collideY = el.y < this.y + this.h && el.y + el.h > this.y
+        return  collideX && collideY
             
      }
     

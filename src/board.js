@@ -9,7 +9,7 @@ class Board {
         this.w = this.ctx.canvas.width
 
         this.img = new Image()
-        this.img.src = './img/Tablero_LOC_800_X_800.jpg'
+        this.img.src = './img/LOC_BOARD_FINAL.jpg'
     }
 
     draw() {
@@ -21,5 +21,12 @@ class Board {
             this.h
         )
     }
-    
+
+     collide() {
+        // const collideX = el.x + el.w > this.x && el.x < this.x + this.w
+        // const collideY = el.y < this.y + this.h && el.y + el.h > this.y
+        const collideX = this.player.x + this.player.w > this.ctx.canvas.width
+
+        return collideX
+     }
 }
