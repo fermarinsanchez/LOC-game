@@ -13,27 +13,28 @@
       </div>
         <canvas id="canvas" width="800" height="800">
         </canvas>
-        <aside>
+        <div class="aside-bar">
           <h3 class="headers">TIME</h3>
           <p id="timer">60</p>
           <h3 class="headers">PLAYER 1 SCORE:</h3>
           <div id="count-down"></div>
-          <p id="score-1">0</p>
+          <p class="score" id="score-1">0</p>
           <label for="health-1">Player 1 Healt:</label>
-          <progress id="health-1" max="100" value="100"></progress>  
+          <progress class="health" id="health-1" max="100" value="100"></progress>  
           <h3 class="headers">PLAYER 2 SCORE:</h3>
-          <p id="score-2">0</p>
+          <p class="score" id="score-2">0</p>
           <label for="health-2">Player 2 Healt:</label>
-          <progress id="health-2" max="100" value="100"></progress>  
+          <progress class="health" id="health-2" max="100" value="100"></progress>  
           <div id="waste-counter"></div>
-        </aside>
+        </div>
     </div>
-    <button id="start">start</button>
+    <button id="start-1">one player</button>
+    <button id="start-2">two players</button>
+    <script src="./src/constants.js"></script>
     <script src="./src/enemyOne.js"></script>
     <script src="./src/nucleus.js"></script>
     <script src="./src/wall.js"></script>
     <script src="./src/radioactiveWaste.js"></script>
-    <script src="./src/constants.js"></script>
     <script src="./src/player.js"></script>
     <script src="./src/player-2.js"></script>
     <script src="./src/board.js"></script>

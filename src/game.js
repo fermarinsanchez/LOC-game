@@ -12,6 +12,10 @@ class Game {
       this.wastedEl = []
       this.walls = []
       this.enemiesOneArr = []
+      this.skullsArr = []
+
+      this.skullImg = new Image()
+      this.skullImg.src = './img/player_dead.png'
 
       this.score = 0
       this.time = 60
@@ -19,7 +23,7 @@ class Game {
       this.stillAlive = 2
       
       this._addWaste(this.waste, 10)
-      this._addPlayers()
+      // this._addPlayers()
     }
   
     start() {
@@ -79,13 +83,26 @@ class Game {
     }
   
     
-    _addPlayers(p1,p2) {
-      const jug1 = new Player(ctx)
-      const jug2 = new Player2(ctx)
+    _addOnePlayer() {
+      this.players.push(new Player(ctx))
+      const healthRounded1 = Math.floor(this.players[0].health)
+      healthOne.value =  `${healthRounded1}`
+      // gameScore1.innerText = `${this.players[0].score}` 
+      //   // const healthRounded2 = Math.floor(this.players[1].health)
+        
+        // healthTwo.value =  `${healthRounded2}`
+  
+        
+        // gameScore2.innerText = `${this.players[1].score}`
+    }
 
-      this.players.push(jug1)
-      this.players.push(jug2)
-      console.log(this.players)
+    _addTwoPlayers() {
+      this.players.push(new Player(ctx), new Player2(ctx))
+      const healthRounded1 = Math.floor(this.players[0].health)
+      const healthRounded2 = Math.floor(this.players[1].health)
+      healthOne.value =  `${healthRounded1}`
+      healthTwo.value =  `${healthRounded2}`
+
     }
 
     _addWaste(waste,len) {
@@ -137,33 +154,27 @@ class Game {
         }
       })
 
-      if(this.players[0].collide(this.players[1])) {
-        this.players[0].vx = 0
-        this.x = this.ctx.canvas.width - this.w
-        this.players[0].vy = 0
-        this.y = this.ctx.canvas.height - this.h
+      if(this.players.length === 2) {
+        if(this.players[0].collide(this.players[1])) {
+          this.players[0].vx = 0
+          this.x = this.ctx.canvas.width - this.w
+          this.players[0].vy = 0
+          this.y = this.ctx.canvas.height - this.h
+        }
+  
+        if(this.players[1].collide(this.players[0])) {
+          this.players[1].vx = 0
+          this.x = this.ctx.canvas.width - this.w
+          this.players[1].vy = 0
+          this.y = this.ctx.canvas.height - this.h
+        }
       }
 
-      if(this.players[1].collide(this.players[0])) {
-        this.players[1].vx = 0
-        this.x = this.ctx.canvas.width - this.w
-        this.players[1].vy = 0
-        this.y = this.ctx.canvas.height - this.h
-      }
+      
       
     }
 
-    _printHealth() {
-      const healthRounded1 = Math.floor(this.players[0].health)
-      const healthRounded2 = Math.floor(this.players[1].health)
-      healthOne.value =  `${healthRounded1}`
-      healthTwo.value =  `${healthRounded2}`
-    }
-
-    _printScore() {
-      gameScore1.innerText = `${this.players[0].score}`
-      gameScore2.innerText = `${this.players[1].score}`
-    }
+   
     
     _pickOrStepWaste() {
       
@@ -178,7 +189,11 @@ class Game {
   
             if (player.takeWaste) {
               player.health -= 0.1
-              this._printHealth()
+              let index =  this.players.indexOf(player)
+              const healthProgress = Array.from(HEALTHS)
+              healthProgress[index].value = player.health
+              return true
+              
             }
           }
         })
@@ -187,12 +202,15 @@ class Game {
 
     _checkCollisionsWithEnemies() {
 
-      this.players.forEach(player => {
-        this.enemiesOneArr.forEach(el => {
+      this.players.some(player => {
+        return this.enemiesOneArr.some(el => {
           if (el.collide(player)) {
             player.health -= 1
-            this._printHealth()
-            console.log(player.health)
+            let index =  this.players.indexOf(player)
+            const healthProgress = Array.from(HEALTHS)
+            healthProgress[index].value = player.health
+            
+            return true
           }
         })
       })
@@ -201,12 +219,16 @@ class Game {
     
 
     _wasteInNucleus() {
-
+      
       this.players.forEach(player => {
         if (this.nucleus.collide(player) && player.takeWaste) {
           player.score += 50
-          this._printScore()
+          let index =  this.players.indexOf(player)
+          const scoresParagraphs = Array.from(SCORES)
+
+          scoresParagraphs[index].innerHTML = player.score
           player.takeWaste = false
+          return true
         }
       })
       
@@ -231,22 +253,25 @@ class Game {
 
     _logicWinOrLose() {
       
-      // if (this.itsAlive < 0) {
-      //   this._gameOver()
-      // }
+      if (!this.players.length) {
+        this._gameOver()
+      }
 
       this.players.forEach(player => {
         const safeZone = (player.x + player.w ) >= this.ctx.canvas.width
 
         if (player.health < 0)  {
-          // this._gameOver()
-          this._onlyOneLose(player)
+          player.img.src = './img/player_dead.png'
           
-          console.log(this.stillAlive)
-
+          setInterval(() => {
+            let index = this.players.indexOf(player)
+            if (index > -1) { this.players.splice(index, 1) }
+            }, 3000)
+            
+          player.itsAlive = false
         }
 
-        // if (this.stillAlive < 0) {
+        // if (player) {
         //   this._gameOver()
         // }
         
@@ -284,6 +309,21 @@ class Game {
       player.img.src = './img/player_dead.png'
       player.itsAlive = false
       this.stillAlive -= 1
+
+      if( this.players.length === 2) {
+        if(!this.players[0].itsAlive && this.players[1].itsAlive || this.players[0].itsAlive && !this.players[1].itsAlive ) {
+          this.stillAlive = 0
+          console.log('still alive 0')
+        }
+      }
+
+      
+
+      if (this.stillAlive <= 0) {
+        console.log('stillAlive zero and game over')
+        this._gameOver()
+      }
+
     }
 
     _gameWin() {

@@ -30,7 +30,7 @@ button {
     
 }
 
-aside {
+.aside-bar {
     padding: 50px 50px;
     background-color: black;
     color: rgb(104, 255, 0);
