@@ -35,6 +35,10 @@ button {
     background-color: black;
     color: rgb(104, 255, 0);
     font-size: 24px;
+    width: 300px;
+}
+.aside-bar img {
+    width: 10%;
 }
 
 
@@ -57,6 +61,26 @@ button {
     border-radius: 20px;
 }
 
+.is-hidden {
+    visibility: hidden;
+}
+#player-2 {
+    padding-top: 20px;;
+}
 
+#waste-counter {
+    display: flex;
+    align-items: center;
+    justify-content:flex-start;
+    padding-top: 30px;
+}
+
+#waste-counter img {
+    width: 10%;
+}
+
+.waste-array {
+    padding-left: 50px;
+}
 
 

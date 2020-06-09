@@ -5,8 +5,11 @@ const game = new Game(ctx)
 const start1btn = document.querySelector('#start-1')
 const start2btn = document.querySelector('#start-2')
 const takeReady = document.querySelector('#count-down > p')
+const twoPlayers = document.querySelector('#player-2')
+console.log(twoPlayers)
 
 start1btn.addEventListener('click', () => {
+
     const first = setTimeout(() =>{
         takeReady.classList.toggle('ready')
         takeReady.innerText = 'READY...'
@@ -53,10 +56,10 @@ start2btn.addEventListener('click', () => {
         clearInterval(third)
         takeReady.innerText = ''
         takeReady.classList.toggle('ready')
+        twoPlayers.classList.toggle('is-hidden')
         game._addTwoPlayers()
         game.start()
         game.gameTimer()
     }, 4000)
     
 })
-

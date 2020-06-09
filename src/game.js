@@ -84,20 +84,13 @@ class Game {
   
     
     _addOnePlayer() {
-      this.players.push(new Player(ctx))
+      this.players.push(new Player(ctx, 1))
       const healthRounded1 = Math.floor(this.players[0].health)
       healthOne.value =  `${healthRounded1}`
-      // gameScore1.innerText = `${this.players[0].score}` 
-      //   // const healthRounded2 = Math.floor(this.players[1].health)
-        
-        // healthTwo.value =  `${healthRounded2}`
-  
-        
-        // gameScore2.innerText = `${this.players[1].score}`
     }
 
     _addTwoPlayers() {
-      this.players.push(new Player(ctx), new Player2(ctx))
+      this.players.push(new Player(ctx,1), new Player2(ctx, 2))
       const healthRounded1 = Math.floor(this.players[0].health)
       const healthRounded2 = Math.floor(this.players[1].health)
       healthOne.value =  `${healthRounded1}`
@@ -109,6 +102,7 @@ class Game {
       for (let i = 0; i < len; i++) {
         this.wastedEl.push(new Waste(ctx))
       }
+      wasteCounter.innerHTML = `X    ${this.wastedEl.length}`
       return this.wastedEl
     }
 
@@ -189,9 +183,9 @@ class Game {
   
             if (player.takeWaste) {
               player.health -= 0.1
-              let index =  this.players.indexOf(player)
+              
               const healthProgress = Array.from(HEALTHS)
-              healthProgress[index].value = player.health
+              healthProgress[player.playerNum -1].value = player.health
               return true
               
             }
@@ -206,9 +200,9 @@ class Game {
         return this.enemiesOneArr.some(el => {
           if (el.collide(player)) {
             player.health -= 1
-            let index =  this.players.indexOf(player)
+            
             const healthProgress = Array.from(HEALTHS)
-            healthProgress[index].value = player.health
+            healthProgress[player.playerNum -1].value = player.health
             
             return true
           }
@@ -223,10 +217,10 @@ class Game {
       this.players.forEach(player => {
         if (this.nucleus.collide(player) && player.takeWaste) {
           player.score += 50
-          let index =  this.players.indexOf(player)
+          wasteCounter.innerHTML = `X    ${this.wastedEl.length}`
           const scoresParagraphs = Array.from(SCORES)
 
-          scoresParagraphs[index].innerHTML = player.score
+          scoresParagraphs[player.playerNum -1].innerHTML = player.score
           player.takeWaste = false
           return true
         }
@@ -243,7 +237,7 @@ class Game {
           clearInterval(countdownTimer)
         }  
 
-        if(healthOne.value <= 0 || healthTwo.value <= 0) {
+        if(healthOne.value <= 0 && healthTwo.value <= 0) {
           this.time = this.time
           clearInterval(countdownTimer)
         }

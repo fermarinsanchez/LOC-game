@@ -24,3 +24,5 @@ let healthTwo = document.getElementById('health-2')
 
 const ready = document.querySelector('.ready p')
 
+const wasteCounter = document.querySelector('span.waste-array')
+

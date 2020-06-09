@@ -1,5 +1,5 @@
 class Player {
-    constructor(ctx) {
+    constructor(ctx, playerNum) {
         this.ctx = ctx
 
         this.x = this.ctx.canvas.width - 50
@@ -20,6 +20,7 @@ class Player {
         this.takeWaste = false
         this.itsAlive = true
 
+        this.playerNum = playerNum
     }
 
 

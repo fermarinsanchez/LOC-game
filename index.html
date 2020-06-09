@@ -16,16 +16,25 @@
         <div class="aside-bar">
           <h3 class="headers">TIME</h3>
           <p id="timer">60</p>
-          <h3 class="headers">PLAYER 1 SCORE:</h3>
-          <div id="count-down"></div>
-          <p class="score" id="score-1">0</p>
-          <label for="health-1">Player 1 Healt:</label>
-          <progress class="health" id="health-1" max="100" value="100"></progress>  
-          <h3 class="headers">PLAYER 2 SCORE:</h3>
-          <p class="score" id="score-2">0</p>
+          <div id="player-1" class="player-1-panel">
+            <img src="img/player-1-item copia.png" alt="player-1">
+            <h3 class="headers">PLAYER 1 SCORE:</h3>
+            <div id="count-down"></div>
+            <p class="score" id="score-1">0</p>
+            <label for="health-1">Player 1 Healt:</label>
+            <progress class="health" id="health-1" max="100" value="100"></progress>  
+          </div>
+          <div id="player-2" class="is-hidden">
+            <img src="img/player-2-item copia.png" alt="player-1">
+            <h3 class="headers ">PLAYER 2 SCORE:</h3>
+          <p class="score " id="score-2">0</p>
           <label for="health-2">Player 2 Healt:</label>
-          <progress class="health" id="health-2" max="100" value="100"></progress>  
-          <div id="waste-counter"></div>
+          <progress class="health" id="health-2" max="100" value="100"></progress> 
+          </div>
+          <div id="waste-counter">
+            <img src="img/waste-in panel.png" alt="radioactiveWaste">
+            <span class="waste-array"></span>
+          </div>
         </div>
     </div>
     <button id="start-1">one player</button>
