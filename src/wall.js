@@ -9,12 +9,13 @@ class Wall {
     }
     
     draw() {
-        this.ctx.strokeRect(
+        this.ctx.fillRect(
             this.x,
             this.y,
             this.w,
             this.h
         )
+        this.ctx.fillStyle = "rgba(255, 255, 255, 0)";
     }
 
     collide(el) {

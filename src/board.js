@@ -9,7 +9,7 @@ class Board {
         this.w = this.ctx.canvas.width
 
         this.img = new Image()
-        this.img.src = './img/LOC_BOARD_FINAL.jpg'
+        this.img.src = './img/LOC_BOARD_FINAL copia.jpg'
     }
 
     draw() {

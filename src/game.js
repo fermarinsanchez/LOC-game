@@ -102,7 +102,7 @@ class Game {
       for (let i = 0; i < len; i++) {
         this.wastedEl.push(new Waste(ctx))
       }
-      wasteCounter.innerHTML = `X    ${this.wastedEl.length}`
+      wasteCounter.innerHTML = `WASTE REMAINS   X    ${this.wastedEl.length}`
       return this.wastedEl
     }
 
@@ -147,20 +147,26 @@ class Game {
           player.x = this.ctx.canvas.width - player.w
         }
       })
-
+      // this.players.forEach(player1 => {
+      //   this.players.forEach(player2 => {
+      //     if(player1.collide(player2)) {
+      //       this.player1.x = this.ctx.canvas.width - 
+      //     }
+      //   })
+      // })
       if(this.players.length === 2) {
         if(this.players[0].collide(this.players[1])) {
           this.players[0].vx = 0
-          this.x = this.ctx.canvas.width - this.w
+          
           this.players[0].vy = 0
-          this.y = this.ctx.canvas.height - this.h
+         
         }
   
         if(this.players[1].collide(this.players[0])) {
           this.players[1].vx = 0
-          this.x = this.ctx.canvas.width - this.w
+         
           this.players[1].vy = 0
-          this.y = this.ctx.canvas.height - this.h
+          
         }
       }
 
@@ -180,6 +186,10 @@ class Game {
               if (index > -1) { this.wastedEl.splice(index, 1) }
               player.takeWaste = true
             }
+
+           if (player.takeWaste) {
+             player.img.src = player.imgTrue.src
+           }
   
             if (player.takeWaste) {
               player.health -= 0.1
@@ -200,7 +210,7 @@ class Game {
         return this.enemiesOneArr.some(el => {
           if (el.collide(player)) {
             player.health -= 1
-            
+           
             const healthProgress = Array.from(HEALTHS)
             healthProgress[player.playerNum -1].value = player.health
             
@@ -211,17 +221,20 @@ class Game {
       
     }
     
-
+    
     _wasteInNucleus() {
       
       this.players.forEach(player => {
         if (this.nucleus.collide(player) && player.takeWaste) {
           player.score += 50
-          wasteCounter.innerHTML = `X    ${this.wastedEl.length}`
+          wasteCounter.innerHTML = `WASTE REMAINS   X    ${this.wastedEl.length}`
           const scoresParagraphs = Array.from(SCORES)
 
           scoresParagraphs[player.playerNum -1].innerHTML = player.score
           player.takeWaste = false
+          if (!player.takeWaste) {
+            player.img.src = './img/Spritesheet_P1_Sin.png'
+          }
           return true
         }
       })
@@ -237,7 +250,7 @@ class Game {
           clearInterval(countdownTimer)
         }  
 
-        if(healthOne.value <= 0 && healthTwo.value <= 0) {
+        if(healthTwo.value <= 0 && healthTwo.value <= 0) {
           this.time = this.time
           clearInterval(countdownTimer)
         }
@@ -248,6 +261,8 @@ class Game {
     _logicWinOrLose() {
       
       if (!this.players.length) {
+        console.log('game over')
+ 
         this._gameOver()
       }
 
@@ -255,10 +270,11 @@ class Game {
         const safeZone = (player.x + player.w ) >= this.ctx.canvas.width
 
         if (player.health < 0)  {
-          player.img.src = './img/player_dead.png'
+          player.img.src = './img/Spritesheet_skull.png'
           
           setInterval(() => {
             let index = this.players.indexOf(player)
+           
             if (index > -1) { this.players.splice(index, 1) }
             }, 3000)
             
@@ -299,26 +315,26 @@ class Game {
      
     }
 
-    _onlyOneLose(player) {
-      player.img.src = './img/player_dead.png'
-      player.itsAlive = false
-      this.stillAlive -= 1
+    // _onlyOneLose(player) {
+    //   player.img.src = './img/Spritesheet_skull.png'
+    //   player.itsAlive = false
+    //   this.stillAlive -= 1
 
-      if( this.players.length === 2) {
-        if(!this.players[0].itsAlive && this.players[1].itsAlive || this.players[0].itsAlive && !this.players[1].itsAlive ) {
-          this.stillAlive = 0
-          console.log('still alive 0')
-        }
-      }
+    //   if( this.players.length === 2) {
+    //     if(!this.players[0].itsAlive && this.players[1].itsAlive || this.players[0].itsAlive && !this.players[1].itsAlive ) {
+    //       this.stillAlive = 0
+    //       console.log('still alive 0')
+    //     }
+    //   }
 
       
 
-      if (this.stillAlive <= 0) {
-        console.log('stillAlive zero and game over')
-        this._gameOver()
-      }
+    //   if (this.stillAlive <= 0) {
+    //     console.log('stillAlive zero and game over')
+    //     this._gameOver()
+    //   }
 
-    }
+    // }
 
     _gameWin() {
       this.ctx.font = "60px Helvetica";

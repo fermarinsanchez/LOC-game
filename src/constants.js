@@ -26,3 +26,5 @@ const ready = document.querySelector('.ready p')
 
 const wasteCounter = document.querySelector('span.waste-array')
 
+
+
