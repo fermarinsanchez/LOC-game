@@ -160,31 +160,30 @@ class Game {
           player.x = this.ctx.canvas.width - player.w
         }
       })
-      // this.players.forEach(player1 => {
-      //   this.players.forEach(player2 => {
-      //     if(player1.collide(player2)) {
-      //       this.player1.x = this.ctx.canvas.width - 
-      //     }
-      //   })
-      // })
-      // if(this.players.length === 2) {
-      //   if(this.players[0].collide(this.players[1])) {
-      //     this.players[0].vx = 0
-          
-      //     this.players[0].vy = 0
-         
-      //   }
-  
-      //   if(this.players[1].collide(this.players[0])) {
-      //     this.players[1].vx = 0
-         
-      //     this.players[1].vy = 0
-          
-      //   }
-      // }
-
-      
-      
+      this.players.some(player => {
+        return this.enemiesOneArr.some(el => {
+          if (el.collide(player)) {
+            player.health -= 0.5
+           
+            const healthProgress = Array.from(HEALTHS)
+            healthProgress[player.playerNum -1].value = player.health
+            
+            return true
+          }
+        })
+      })
+      this.players.some(player => {
+        return this.enemiesTwoArr.some(el => {
+          if (el.collide(player)) {
+            player.health -= 0.5
+           
+            const healthProgress = Array.from(HEALTHS)
+            healthProgress[player.playerNum -1].value = player.health
+            
+            return true
+          }
+        })
+      })
     }
 
    
@@ -222,30 +221,7 @@ class Game {
 
     _checkCollisionsWithEnemies() {
 
-      this.players.some(player => {
-        return this.enemiesOneArr.some(el => {
-          if (el.collide(player)) {
-            player.health -= 0.5
-           
-            const healthProgress = Array.from(HEALTHS)
-            healthProgress[player.playerNum -1].value = player.health
-            
-            return true
-          }
-        })
-      })
-      this.players.some(player => {
-        return this.enemiesTwoArr.some(el => {
-          if (el.collide(player)) {
-            player.health -= 0.5
-           
-            const healthProgress = Array.from(HEALTHS)
-            healthProgress[player.playerNum -1].value = player.health
-            
-            return true
-          }
-        })
-      })
+    
       
     }
     
@@ -257,7 +233,7 @@ class Game {
           player.score += 50
           wasteCounter.innerHTML = `WASTE REMAINS   X    ${this.wastedEl.length}`
           const scoresParagraphs = Array.from(SCORES)
-
+          console.log(scoresParagraphs)
           scoresParagraphs[player.playerNum -1].innerHTML = player.score
           player.takeWaste = false
           player.wasteClear += 1
@@ -298,10 +274,10 @@ class Game {
         }
 
         this.players.some(player => {
+
           const safeZone = (player.x + player.w ) >= this.ctx.canvas.width
           if( !this.wastedEl.length && safeZone) {
             clearInterval(countdownTimer)
-            // this._gameOver()
           }
         })
 
@@ -328,49 +304,11 @@ class Game {
         if(!this.wastedEl.length && safeZone && !player.takeWaste) {
           console.log('enter')
           this._gameOver()
-          gameOver.innerText = `YOU WIN!!!`
           this.time = this.time
         }  
-        
-        // if (!this.wastedEl.length && safeZone && !player.takeWaste) {
-        //   clearInterval(this.intervalId)
-        //   this._gameOver()
-        // }
-  
-        // if (this.time <= 0 && safeZone && player.takeWaste) {
-        //   clearInterval(this.intervalId)
-        //   this._gameOver()
-        // }
-  
-        // if (this.time <= 0 && !safeZone) {
-        //   clearInterval(this.intervalId)
-        //   this._gameOver()
-        // }
-        
       })
      
     }
-
-    // _onlyOneLose(player) {
-    //   player.img.src = './img/Spritesheet_skull.png'
-    //   player.itsAlive = false
-    //   this.stillAlive -= 1
-
-    //   if( this.players.length === 2) {
-    //     if(!this.players[0].itsAlive && this.players[1].itsAlive || this.players[0].itsAlive && !this.players[1].itsAlive ) {
-    //       this.stillAlive = 0
-    //       console.log('still alive 0')
-    //     }
-    //   }
-
-      
-
-    //   if (this.stillAlive <= 0) {
-    //     console.log('stillAlive zero and game over')
-    //     this._gameOver()
-    //   }
-
-    // }
   
     _gameOver() {
       
@@ -382,7 +320,7 @@ class Game {
       const wasteP2Done = document.querySelector('#waste-p2-done')
       const finalWaste = document.querySelector('#waste-final')
       const hiddenP2 = document.querySelector('.p2')
-      const winnerMsg = document.querySelector('#winner')
+      const restButton = document.querySelector('.restart')
 
       winLose.innerText = 'GAME OVER'
       
@@ -391,6 +329,9 @@ class Game {
         p1Score.innerText = `Player 1 Score: ${this.players[0].score}`
         wasteP1Done.innerText = `wastes removed: ${this.players[0].wasteClear}`
         finalWaste.innerHTML =  `remains ${this.wastedEl.length} wastes in MASHA`
+        restButton.addEventListener('click', () => {
+          window.location.reload()
+        })
         gameOver.classList.toggle('is-hidden')
         
         this.players.some(player => {
@@ -401,10 +342,6 @@ class Game {
             document.querySelector('#timer').textContent = '0'
           }  
     
-          // if (this.time === 0) {
-          //  this._gameOver()
-          // }
-          
         })
       }
 
@@ -414,47 +351,32 @@ class Game {
         p2Score.innerText = `Player 2 Score: ${this.players[1].score}`
         wasteP2Done.innerText = `wastes removed: ${this.players[1].wasteClear}`
         finalWaste.innerHTML =  `remains ${this.wastedEl.length} wastes in MASHA`
+        restButton.addEventListener('click', () => {
+          window.location.reload()
+        })
         gameOver.classList.toggle('is-hidden')
         hiddenP2.classList.toggle('is-hidden')
-
-        // if ( this.players[0].score >= this.player[1].score) {
-        //   winLose.innerText = `PLAYER 1 WIN!!!`
-        // } else { winLose.innerText = `PLAYER 2 WIN!!!` }
-        // }
         
 
-          const logicWin = (this.players[0].score) > (this.players[1].score)
-          const logicDraw = (this.players[0].score) === (this.players[1].score)
+        const logicWin1 = (this.players[0].score) > (this.players[1].score)
+        const logicWin2 = (this.players[1].score) > (this.players[0].score)
+        const logicDraw = (this.players[0].score) === (this.players[1].score)
 
-          if(logicWin) {
-            winLose.innerText = `PLAYER 1 WIN!!!`
-            document.querySelector('#timer').textContent = '0'
-          } else if(logicDraw) {
-            winLose.innerText = `DRAW!!!`
-            document.querySelector('#timer').textContent = '0'
-          } else { 
-            winLose.innerText = `PLAYER 2 WIN!!!` 
-            document.querySelector('#timer').textContent = '0'
-          }
 
-          // if(this.time === 0 && ((player.playerNum === 1 && player.score) >= (player.playerNum === 2 && player.score)) && !this.wastedEl.length) {
-          //   winLose.innerText = `PLAYER 1 WIN!!!`
-          // } else { winLose.innerText = `PLAYER 2 WIN!!!` }
+        if(logicWin1) {
+          winLose.innerText = `PLAYER 1 WIN!!!`
+          document.querySelector('#timer').textContent = '0'
+        } else if(logicWin2) {
+          winLose.innerText = `PLAYER 2 WIN!!!` 
+          document.querySelector('#timer').textContent = '0'
+          } else if (logicDraw){ 
 
+          winLose.innerText = `DRAW!!!`
+          document.querySelector('#timer').textContent = '0'
+        }
     
       }
 
-
-      
-      // this.ctx.save()
-      // this.ctx.font = "60px Helvetica";
-      // // this.ctx.textAlign = "center";
-      // this.ctx.fillText(
-      //   "GAME OVER",
-      //   this.ctx.canvas.width / 2,
-      //   this.ctx.canvas.height / 2
-      // );
-      // this.ctx.restore()
        clearInterval(this.intervalId)
     }
   }

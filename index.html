@@ -7,6 +7,19 @@
     <link href="./css/style.css" rel="stylesheet" type="text/css" />
   </head>
   <body>
+    <div class="menu">
+        <h1>LIQUIDATORS OF CHERNOBYL</h1>
+        <p>This game is in honor of the volunteer workers who cleaned of radioactive graphite residues the roofs near reactor 4 whose explosion was the most serious nuclear accident known.</p>
+        <div class="menu-container">
+          <img src="./img/menu_player_1.png" alt="player 1 LOC">
+          <div class="menu-buttons">
+            <button id="start-1">ONE PLAYER</button>
+            <button id="start-2">TWO PLAYERS</button>
+          </div>
+          <img src="./img/menu_player_2.png" alt="player 2 LOC">
+        </div>
+        <p class="credits">CONCEPT AND DEVELOPMENT BY FERNANDO MARÍN | GRAPHICS DESIGNED BY RODRIGO MARÍN | BACKGROUND MUSIC: RADIOACTIVITY (KRAFTWERK)</p>
+    </div>
     <div class="board">
       <div id="count-down">
         <p></p>
@@ -31,7 +44,9 @@
           <div class="elements-container">
             <img src="./img/waste-in panel.png" alt="waste-final"><span id="waste-final"></span>
           </div>
-          <h3 id="winner"></h3>
+          <div class="elements-container">
+            <button class="restart">BACK TO MENU</button>
+          </div>
         </div>
         
       </div>
@@ -61,8 +76,6 @@
           </div>
         </div>
     </div>
-    <button id="start-1">one player</button>
-    <button id="start-2">two players</button>
     <script src="./src/constants.js"></script>
     <script src="./src/enemyOne.js"></script>
     <script src="./src/enemyTwo.js"></script>

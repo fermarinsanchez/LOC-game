@@ -1,11 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
+
+
 body {
     margin: 0 auto;
     box-sizing: border-box;
     font-family: 'VT323', monospace;
-    background-image: url('/Users/fermarinsanchez/dev/ironhack/LOC-game/img/BACKGROUND SCREEN GAME.jpg');
+    background: url('../img/bg.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100%;
+    overflow: hidden;
 }
+.menu {
+    background-color: black;
+    position: absolute;
+    z-index: 3;
+    width: 1250px;
+    height: 800px;
+    top: 9%;
+    left: 14%;
+}
+
+.menu h1 {
+    width: 1000px;
+    height: 300px;
+    font-size: 150px;
+    margin: auto;
+    text-align: center;
+    color: #f9e327;
+}
+
+.menu p {
+    padding-top: 30px;
+    width: 896px;
+    height: 76px;
+    font-size: 24px;
+    margin: auto;
+    text-transform: uppercase;
+    text-align: center;
+    color: #c8c8c8;
+}
+
+.menu-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.menu-container img {
+    width: 30%;
+}
+
 
 canvas {
     border: 1px dotted black;
@@ -23,10 +68,24 @@ canvas {
 button {
     margin: 10px auto;
     display: block;
+    color: #408ab0;
+    font-size: 60px;
+    font-family: 'VT323', monospace;
+    border: 0;
     padding: 10px 30px;
-    background-color: greenyellow;
-    
+    background-color: rgba(0, 0, 0, 0);
 }
+
+button:hover {
+    color: #eb3933;
+}
+
+.credits {
+    height: 80px;
+    margin: auto;
+    font-size: 40px;
+    color: #f9e327!important;
+  }
 
 .aside-bar {
     padding: 50px 50px;
@@ -121,7 +180,7 @@ button {
 }
 
 .game-over-container {
-    padding-left: 200px;
+    padding-left: 225px;
 }
 
 .elements-container {
@@ -129,6 +188,16 @@ button {
     justify-content: flex-start;
     align-items: center;
     padding-bottom: 20px;
+}
+.elements-container button {
+    padding: 38px 10px 10px 10px;
+    margin-top: 17px;
+    margin-left: 90px;
+    color: rgb(104, 255, 0);
+}
+
+.elements-container button:hover {
+    color: #eb3933;
 }
 
 
