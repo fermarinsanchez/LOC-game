@@ -92,4 +92,44 @@ button {
     padding-left: 50px;
 }
 
+.game-over {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    /* align-items: center; */
+    width: 800px;
+    height: 800px;
+    font-size: 32px;
+    background-color:black;
+    color: rgb(104, 255, 0);
+    position: absolute;
+    z-index: 3;
+    top: 10%;
+    left: 16%;
+
+}
+
+.game-over h3 {
+    font-size: 100px;
+    text-align: center;
+
+}
+
+.game-over img {
+    width: 10%;
+    padding-right: 50px;
+}
+
+.game-over-container {
+    padding-left: 200px;
+}
+
+.elements-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    padding-bottom: 20px;
+}
+
+
 

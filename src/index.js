@@ -1,6 +1,6 @@
 const ctx = document.getElementById('canvas').getContext('2d')
 
-const game = new Game(ctx)
+const game = new Game(ctx, 1, 8)
 
 const start1btn = document.querySelector('#start-1')
 const start2btn = document.querySelector('#start-2')

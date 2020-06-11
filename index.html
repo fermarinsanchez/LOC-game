@@ -11,11 +11,35 @@
       <div id="count-down">
         <p></p>
       </div>
+      <div id="game-over" class="game-over is-hidden">
+        <h3 id="win-lose"></h3>
+        <div class="game-over-container">
+          <div class="elements-container">
+            <img src="./img/player-1-item copia.png" alt="player1"><span id="p1-score"></span>
+          </div>
+          <div class="elements-container">
+            <img src="./img/waste-in panel.png" alt="waste"><span id="waste-p1-done"></span>
+          </div>
+          <div class=" p2 is-hidden">
+            <div class="elements-container">
+              <img src="./img/player-2-item copia.png" alt="player2"><span id="p2-score"></span>
+            </div>
+            <div class="elements-container">
+              <img src="./img/waste-in panel.png" alt="waste"><span id="waste-p2-done"></span>
+            </div>
+          </div>
+          <div class="elements-container">
+            <img src="./img/waste-in panel.png" alt="waste-final"><span id="waste-final"></span>
+          </div>
+          <h3 id="winner"></h3>
+        </div>
+        
+      </div>
         <canvas id="canvas" width="800" height="800">
         </canvas>
         <div class="aside-bar">
           <h3 class="headers">TIME</h3>
-          <p id="timer" class="seconds">60</p>
+          <p id="timer" class="seconds"></p>
           <div id="player-1" class="player-1-panel">
             <img src="img/player-1-item copia.png" alt="player-1">
             <h3 class="headers">PLAYER 1 SCORE:</h3>

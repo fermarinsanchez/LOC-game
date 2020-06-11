@@ -1,5 +1,5 @@
 class Game {
-    constructor(ctx) {
+    constructor(ctx, wasteNum, time) {
       this.ctx = ctx;
       this.intervalId = null;
       this.tick = 0
@@ -7,9 +7,10 @@ class Game {
       this.bg = new Board(ctx)
       this.nucleus = new Nucleus(ctx)
       this.players = []
-      this.waste = new Waste(ctx)
       this.enemiesOne = new ChemicalPeople(ctx)
+      this.waste = new Waste(ctx)
       this.wastedEl = []
+      this.wasteNum = wasteNum
       this.walls = []
       this.enemiesOneArr = []
       this.skullsArr = []
@@ -18,12 +19,11 @@ class Game {
       this.skullImg.src = './img/player_dead.png'
 
       this.score = 0
-      this.time = 60
+      this.time = time
       this.tick = 0
       this.stillAlive = 2
       
-      this._addWaste(this.waste, 10)
-      // this._addPlayers()
+      this._addWaste(this.waste, this.wasteNum)
     }
   
     start() {
@@ -56,7 +56,11 @@ class Game {
       this.walls.forEach(el => el.draw())
       this.wastedEl.forEach(el => el.draw())
       this.enemiesOneArr.forEach(el => el.draw())
-      this.players.forEach(player => player.draw())
+      this.players.forEach(player => {
+        if (player.itsAlive) {
+          setTimeout(player.draw(), 2000)
+        } else { null }
+      })
       this.nucleus.draw()
       
     }
@@ -107,7 +111,7 @@ class Game {
     }
 
     _addEnemies() {
-      if (this.tick % 150 === 0) {
+      if (this.tick % 350 === 0) {
         const newEnemy = new ChemicalPeople(this.ctx)
         this.enemiesOneArr.push(newEnemy)
       }
@@ -154,21 +158,21 @@ class Game {
       //     }
       //   })
       // })
-      if(this.players.length === 2) {
-        if(this.players[0].collide(this.players[1])) {
-          this.players[0].vx = 0
+      // if(this.players.length === 2) {
+      //   if(this.players[0].collide(this.players[1])) {
+      //     this.players[0].vx = 0
           
-          this.players[0].vy = 0
+      //     this.players[0].vy = 0
          
-        }
+      //   }
   
-        if(this.players[1].collide(this.players[0])) {
-          this.players[1].vx = 0
+      //   if(this.players[1].collide(this.players[0])) {
+      //     this.players[1].vx = 0
          
-          this.players[1].vy = 0
+      //     this.players[1].vy = 0
           
-        }
-      }
+      //   }
+      // }
 
       
       
@@ -187,9 +191,12 @@ class Game {
               player.takeWaste = true
             }
 
-           if (player.takeWaste) {
-             player.img.src = player.imgTrue.src
-           }
+            if (player.takeWaste && (player.playerNum === 1)) {
+              player.img.src = './img/Spritesheet_P1_Con.png'
+            }
+            if (player.takeWaste && (player.playerNum === 2)) {
+              player.img.src = './img/Spritesheet_P2_Con.png'
+            }
   
             if (player.takeWaste) {
               player.health -= 0.1
@@ -232,8 +239,12 @@ class Game {
 
           scoresParagraphs[player.playerNum -1].innerHTML = player.score
           player.takeWaste = false
-          if (!player.takeWaste) {
+          player.wasteClear += 1
+          if (!player.takeWaste && (player.playerNum === 1)) {
             player.img.src = './img/Spritesheet_P1_Sin.png'
+          }
+          if (!player.takeWaste && (player.playerNum === 2)) {
+            player.img.src = './img/Spritesheet_P2_Sin.png'
           }
           return true
         }
@@ -250,66 +261,64 @@ class Game {
           clearInterval(countdownTimer)
         }  
 
-        if(healthTwo.value <= 0 && healthTwo.value <= 0) {
-          this.time = this.time
-          clearInterval(countdownTimer)
+        if (this.players.length === 1) {
+          if ( healthOne.value <= 0) {
+            this.time = this.time
+            clearInterval(countdownTimer)
+            setInterval(this._gameOver(), 2000)
+          }
+         
         }
+
+        if ( this.players.length === 2) {
+          if(healthOne.value <= 0 && healthTwo.value <= 0) {
+            this.time = this.time
+            clearInterval(countdownTimer)
+            setInterval(this._gameOver(), 2000)
+          }
+        }
+
+        if (this.time === 0) {
+          this._gameOver()
+        }
+       
       },1000);
         
     }
 
     _logicWinOrLose() {
       
-      if (!this.players.length) {
-        console.log('game over')
- 
-        this._gameOver()
-      }
-
-      this.players.forEach(player => {
+      this.players.some(player => {
         const safeZone = (player.x + player.w ) >= this.ctx.canvas.width
 
-        if (player.health < 0)  {
-          player.img.src = './img/Spritesheet_skull.png'
+        if (player.health <= 0)  {
           
           setInterval(() => {
-            let index = this.players.indexOf(player)
-           
-            if (index > -1) { this.players.splice(index, 1) }
+            player.itsAlive = false
             }, 3000)
-            
-          player.itsAlive = false
         }
 
-        // if (player) {
-        //   this._gameOver()
-        // }
-        
-        
-         
-        // if (!player.itsAlive) {
-        //   this._gameOver()
-        // }
-
-        if(this.time <= 0 && safeZone && !player.takeWaste) {
-          clearInterval(this.intervalId)
-          this._gameWin()
+        if(!this.wastedEl.length && safeZone && !player.takeWaste) {
+          console.log('enter')
+          this._gameOver()
+          gamOver.innerText = `YOU WIN!!!`
+          this.time = this.time
         }  
         
-        if (!this.wastedEl.length && safeZone && !player.takeWaste) {
-          clearInterval(this.intervalId)
-          this._gameWin()
-        }
+        // if (!this.wastedEl.length && safeZone && !player.takeWaste) {
+        //   clearInterval(this.intervalId)
+        //   this._gameOver()
+        // }
   
-        if (this.time <= 0 && safeZone && player.takeWaste) {
-          clearInterval(this.intervalId)
-          this._gameOver()
-        }
+        // if (this.time <= 0 && safeZone && player.takeWaste) {
+        //   clearInterval(this.intervalId)
+        //   this._gameOver()
+        // }
   
-        if (this.time <= 0 && !safeZone) {
-          clearInterval(this.intervalId)
-          this._gameOver()
-        }
+        // if (this.time <= 0 && !safeZone) {
+        //   clearInterval(this.intervalId)
+        //   this._gameOver()
+        // }
         
       })
      
@@ -335,25 +344,84 @@ class Game {
     //   }
 
     // }
-
-    _gameWin() {
-      this.ctx.font = "60px Helvetica";
-      this.ctx.textAlign = "center";
-      this.ctx.fillText(
-        "YOU WIN!",
-        this.ctx.canvas.width / 2,
-        this.ctx.canvas.height / 2
-      );
-    }
   
     _gameOver() {
-      clearInterval(this.intervalId)
-      this.ctx.font = "60px Helvetica";
-      this.ctx.textAlign = "center";
-      this.ctx.fillText(
-        "GAME OVER",
-        this.ctx.canvas.width / 2,
-        this.ctx.canvas.height / 2
-      );
+      
+      const gameOver = document.querySelector('#game-over')
+      const winLose = document.querySelector('#win-lose')
+      const p1Score = document.querySelector('#p1-score')
+      const wasteP1Done = document.querySelector('#waste-p1-done')
+      const p2Score = document.querySelector('#p2-score')
+      const wasteP2Done = document.querySelector('#waste-p2-done')
+      const finalWaste = document.querySelector('#waste-final')
+      const hiddenP2 = document.querySelector('.p2')
+      const winnerMsg = document.querySelector('#winner')
+
+      winLose.innerText = 'GAME OVER'
+      
+
+      if (this.players.length === 1) {
+        p1Score.innerText = `Player 1 Score: ${this.players[0].score}`
+        wasteP1Done.innerText = `wastes removed: ${this.players[0].wasteClear}`
+        finalWaste.innerHTML =  `remains ${this.wastedEl.length} wastes in MASHA`
+        gameOver.classList.toggle('is-hidden')
+        
+        this.players.some(player => {
+          const safeZone = (player.x + player.w ) >= this.ctx.canvas.width
+  
+          if(!this.wastedEl.length && safeZone && !player.takeWaste) {
+            winLose.innerText = `YOU WIN!!!`
+          }  
+    
+          // if (this.time === 0) {
+          //  this._gameOver()
+          // }
+          
+        })
+      }
+
+      if (this.players.length === 2) {
+        p1Score.innerText = `Player 1 Score: ${this.players[0].score}`
+        wasteP1Done.innerText = `wastes removed: ${this.players[0].wasteClear}`
+        p2Score.innerText = `Player 2 Score: ${this.players[1].score}`
+        wasteP2Done.innerText = `wastes removed: ${this.players[1].wasteClear}`
+        finalWaste.innerHTML =  `remains ${this.wastedEl.length} wastes in MASHA`
+        gameOver.classList.toggle('is-hidden')
+        hiddenP2.classList.toggle('is-hidden')
+
+        // if ( this.players[0].score >= this.player[1].score) {
+        //   winLose.innerText = `PLAYER 1 WIN!!!`
+        // } else { winLose.innerText = `PLAYER 2 WIN!!!` }
+        // }
+        
+
+          const logicWin = (this.players[0].score) > (this.players[1].score)
+          const logicDraw = (this.players[0].score) === (this.players[1].score)
+
+          if(logicWin) {
+            winLose.innerText = `PLAYER 1 WIN!!!`
+          } else if(logicDraw) {
+            winLose.innerText = `DRAW!!!`
+          } else { winLose.innerText = `PLAYER 2 WIN!!!` }
+
+          // if(this.time === 0 && ((player.playerNum === 1 && player.score) >= (player.playerNum === 2 && player.score)) && !this.wastedEl.length) {
+          //   winLose.innerText = `PLAYER 1 WIN!!!`
+          // } else { winLose.innerText = `PLAYER 2 WIN!!!` }
+
+    
+      }
+
+
+      
+      // this.ctx.save()
+      // this.ctx.font = "60px Helvetica";
+      // // this.ctx.textAlign = "center";
+      // this.ctx.fillText(
+      //   "GAME OVER",
+      //   this.ctx.canvas.width / 2,
+      //   this.ctx.canvas.height / 2
+      // );
+      // this.ctx.restore()
+       clearInterval(this.intervalId)
     }
   }
