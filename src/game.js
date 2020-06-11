@@ -8,11 +8,13 @@ class Game {
       this.nucleus = new Nucleus(ctx)
       this.players = []
       this.enemiesOne = new ChemicalPeople(ctx)
+      this.enemiesTwo = new SpiderRad(ctx)
       this.waste = new Waste(ctx)
       this.wastedEl = []
       this.wasteNum = wasteNum
       this.walls = []
       this.enemiesOneArr = []
+      this.enemiesTwoArr = []
       this.skullsArr = []
 
       this.skullImg = new Image()
@@ -56,6 +58,7 @@ class Game {
       this.walls.forEach(el => el.draw())
       this.wastedEl.forEach(el => el.draw())
       this.enemiesOneArr.forEach(el => el.draw())
+      this.enemiesTwoArr.forEach(el => el.draw())
       this.players.forEach(player => {
         if (player.itsAlive) {
           setTimeout(player.draw(), 2000)
@@ -70,6 +73,7 @@ class Game {
     _move() {
       this.players.forEach(player => player.health > 0 ? player.move() : null)
       this.enemiesOneArr.forEach(e => e.move())
+      this.enemiesTwoArr.forEach(e => e.move())
   
     }
 
@@ -114,6 +118,11 @@ class Game {
       if (this.tick % 350 === 0) {
         const newEnemy = new ChemicalPeople(this.ctx)
         this.enemiesOneArr.push(newEnemy)
+      }
+
+      if (this.tick % 500 === 0) {
+        const newEnemy2 = new SpiderRad(this.ctx)
+        this.enemiesTwoArr.push(newEnemy2)
       }
     }
 
@@ -216,7 +225,19 @@ class Game {
       this.players.some(player => {
         return this.enemiesOneArr.some(el => {
           if (el.collide(player)) {
-            player.health -= 1
+            player.health -= 0.5
+           
+            const healthProgress = Array.from(HEALTHS)
+            healthProgress[player.playerNum -1].value = player.health
+            
+            return true
+          }
+        })
+      })
+      this.players.some(player => {
+        return this.enemiesTwoArr.some(el => {
+          if (el.collide(player)) {
+            player.health -= 0.5
            
             const healthProgress = Array.from(HEALTHS)
             healthProgress[player.playerNum -1].value = player.health
@@ -263,7 +284,6 @@ class Game {
 
         if (this.players.length === 1) {
           if ( healthOne.value <= 0) {
-            this.time = this.time
             clearInterval(countdownTimer)
             setInterval(this._gameOver(), 2000)
           }
@@ -271,12 +291,19 @@ class Game {
         }
 
         if ( this.players.length === 2) {
-          if(healthOne.value <= 0 && healthTwo.value <= 0) {
-            this.time = this.time
+          if((healthOne.value <= 0 && healthTwo.value <= 0)) {
             clearInterval(countdownTimer)
             setInterval(this._gameOver(), 2000)
           }
         }
+
+        this.players.some(player => {
+          const safeZone = (player.x + player.w ) >= this.ctx.canvas.width
+          if( !this.wastedEl.length && safeZone) {
+            clearInterval(countdownTimer)
+            // this._gameOver()
+          }
+        })
 
         if (this.time === 0) {
           this._gameOver()
@@ -301,7 +328,7 @@ class Game {
         if(!this.wastedEl.length && safeZone && !player.takeWaste) {
           console.log('enter')
           this._gameOver()
-          gamOver.innerText = `YOU WIN!!!`
+          gameOver.innerText = `YOU WIN!!!`
           this.time = this.time
         }  
         
@@ -371,6 +398,7 @@ class Game {
   
           if(!this.wastedEl.length && safeZone && !player.takeWaste) {
             winLose.innerText = `YOU WIN!!!`
+            document.querySelector('#timer').textContent = '0'
           }  
     
           // if (this.time === 0) {
@@ -400,9 +428,14 @@ class Game {
 
           if(logicWin) {
             winLose.innerText = `PLAYER 1 WIN!!!`
+            document.querySelector('#timer').textContent = '0'
           } else if(logicDraw) {
             winLose.innerText = `DRAW!!!`
-          } else { winLose.innerText = `PLAYER 2 WIN!!!` }
+            document.querySelector('#timer').textContent = '0'
+          } else { 
+            winLose.innerText = `PLAYER 2 WIN!!!` 
+            document.querySelector('#timer').textContent = '0'
+          }
 
           // if(this.time === 0 && ((player.playerNum === 1 && player.score) >= (player.playerNum === 2 && player.score)) && !this.wastedEl.length) {
           //   winLose.innerText = `PLAYER 1 WIN!!!`
