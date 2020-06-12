@@ -16,13 +16,13 @@ class Game {
       this.enemiesOneArr = []
       this.enemiesTwoArr = []
       this.skullsArr = []
+      this.powerUpsArr = []
 
       this.skullImg = new Image()
       this.skullImg.src = './img/player_dead.png'
 
       this.score = 0
       this.time = time
-      this.tick = 0
       this.stillAlive = 2
       
       this._addWaste(this.waste, this.wasteNum)
@@ -40,7 +40,7 @@ class Game {
         this._pickOrStepWaste()
         this._wasteInNucleus()
         this._addEnemies()
-        this._checkCollisionsWithEnemies()
+        this._addPowerUps()
   
       }, 1000 / 60)
     }
@@ -51,7 +51,7 @@ class Game {
 
   
     _draw() {
-      if (this.tick++ > 10000) {
+      if (this.tick++ > 100000) {
         this.tick = 0
       }
       this.bg.draw()
@@ -59,6 +59,7 @@ class Game {
       this.wastedEl.forEach(el => el.draw())
       this.enemiesOneArr.forEach(el => el.draw())
       this.enemiesTwoArr.forEach(el => el.draw())
+      this.powerUpsArr.forEach(el => el.draw())
       this.players.forEach(player => {
         if (player.itsAlive) {
           setTimeout(player.draw(), 2000)
@@ -72,9 +73,8 @@ class Game {
   
     _move() {
       this.players.forEach(player => player.health > 0 ? player.move() : null)
-      this.enemiesOneArr.forEach(e => e.move())
-      this.enemiesTwoArr.forEach(e => e.move())
-  
+      this.enemiesOneArr.forEach(el => el.move())
+      this.enemiesTwoArr.forEach(el => el.move())
     }
 
     _addWalls() {
@@ -124,6 +124,30 @@ class Game {
         const newEnemy2 = new SpiderRad(this.ctx)
         this.enemiesTwoArr.push(newEnemy2)
       }
+    }
+
+    _addPowerUps() {
+      if (this.tick % 1000 === 0) {
+        const lifeUpItem = new LifeUp(ctx)
+        this.powerUpsArr.push(lifeUpItem)
+        console.log(this.powerUpsArr)
+      }
+
+      if (this.tick % 2000 === 0) {
+        const lifeUpBigItem = new LifeUpBig(ctx)
+        this.powerUpsArr.push(lifeUpBigItem)
+      }
+
+      if (this.tick % 800 === 0) {
+        const coinItem = new Coins(ctx)
+        this.powerUpsArr.push(coinItem)
+      }
+
+      if (this.tick % 2000 === 0) {
+        const speedItem = new SpeedUp(ctx)
+        this.powerUpsArr.push(speedItem)
+      }
+
     }
 
     _stopPlayer(player, wall) {
@@ -184,6 +208,19 @@ class Game {
           }
         })
       })
+      this.players.forEach(player => {
+        this.powerUpsArr.forEach(powerUp =>{
+          if(powerUp.collide(player)) {
+            powerUp.power(player)
+            const healthProgress = Array.from(HEALTHS)
+            healthProgress[player.playerNum -1].value = player.health
+            const scoresParagraphs = Array.from(SCORES)
+            scoresParagraphs[player.playerNum -1].innerHTML = player.score
+            const index = this.powerUpsArr.indexOf(powerUp)
+            if (index > -1) {this.powerUpsArr.splice(index, 1)}
+          }
+        })
+      })
     }
 
    
@@ -233,7 +270,6 @@ class Game {
           player.score += 50
           wasteCounter.innerHTML = `WASTE REMAINS   X    ${this.wastedEl.length}`
           const scoresParagraphs = Array.from(SCORES)
-          console.log(scoresParagraphs)
           scoresParagraphs[player.playerNum -1].innerHTML = player.score
           player.takeWaste = false
           player.wasteClear += 1

@@ -7,6 +7,7 @@ class Player {
       this.h = 79
       this.vx = 0
       this.vy = 0
+      this.v = 3
       this.img = new Image()
       this.img.src = './img/Spritesheet_P1_Sin.png'
       this.img.frames = 4
@@ -48,22 +49,22 @@ class Player {
       switch (e.keyCode) {
         case KEY_UP:
           this.actions.up = true
-          this.vy = -3
+          this.vy = -this.v
           this.img.stayIndex = 3
           break;
         case KEY_LEFT:
           this.actions.left = true
-          this.vx = -3
+          this.vx = -this.v
           this.img.stayIndex = 2
           break;
         case KEY_RIGHT:
           this.actions.right = true
-          this.vx = 3
+          this.vx = this.v
           this.img.stayIndex = 1
           break;
         case KEY_DOWN:
           this.actions.down = true
-          this.vy = 3
+          this.vy = this.v
           this.img.stayIndex = 0
           break;
       }

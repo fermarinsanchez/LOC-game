@@ -10,6 +10,7 @@ class Player2 {
         
         this.vx = 0
         this.vy = 0
+        this.v = 3
 
         this.img = new Image()
         this.img.src = './img/Spritesheet_P2_Sin.png'
@@ -58,27 +59,27 @@ class Player2 {
         switch (e.keyCode) {
           case KEY_UP2:
             this.actions.up = true
-            this.vy = -3
+            this.vy = -this.v
             this.img.stayIndex = 3
             break;
           case KEY_LEFT2:
             this.actions.left = true
-            this.vx = -3
+            this.vx = -this.v
             this.img.stayIndex = 2
             break;
           case KEY_RIGHT2:
             this.actions.right = true
-            this.vx = 3
+            this.vx = this.v
             this.img.stayIndex = 1
             break;
           case KEY_DOWN2:
             this.actions.down = true
-            this.vy = 3
+            this.vy = this.v
             this.img.stayIndex = 0
             break;
         }
       })
-      
+
       document.addEventListener('keyup', e => {
           switch (e.keyCode) {
               case KEY_UP2:
@@ -117,7 +118,7 @@ class Player2 {
       if (this.img.frameIndex >= this.img.frames - 1) {
         this.img.frameIndex = 0;
       }
-  }
+    }
 
     collide(el) {
         const collideX = el.x + el.w > this.x && el.x < this.x + this.w
