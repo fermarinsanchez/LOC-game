@@ -20,6 +20,16 @@ body {
     top: 9%;
     left: 14%;
 }
+.instructions {
+    background-color: black;
+    color: rgb(104, 255, 0);
+    position: absolute;
+    z-index: 4;
+    width: 1250px;
+    height: 800px;
+    top: 9%;
+    left: 14%;
+}
 
 .menu h1 {
     width: 1000px;
@@ -197,6 +207,10 @@ button:hover {
 }
 
 .elements-container button:hover {
+    color: #eb3933;
+}
+
+.red-alert {
     color: #eb3933;
 }
 

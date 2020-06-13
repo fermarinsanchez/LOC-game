@@ -61,21 +61,25 @@ class Player2 {
             this.actions.up = true
             this.vy = -this.v
             this.img.stayIndex = 3
+            walkMp3.play()
             break;
           case KEY_LEFT2:
             this.actions.left = true
             this.vx = -this.v
             this.img.stayIndex = 2
+            walkMp3.play()
             break;
           case KEY_RIGHT2:
             this.actions.right = true
             this.vx = this.v
             this.img.stayIndex = 1
+            walkMp3.play()
             break;
           case KEY_DOWN2:
             this.actions.down = true
             this.vy = this.v
             this.img.stayIndex = 0
+            walkMp3.play()
             break;
         }
       })
@@ -107,6 +111,7 @@ class Player2 {
     checkIfDead() {
       if (this.health <= 0) {
         this.img.src = './img/Spritesheet_skull.png'
+        deadMp3.play()
       }
     }
   

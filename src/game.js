@@ -118,34 +118,40 @@ class Game {
       if (this.tick % 350 === 0) {
         const newEnemy = new ChemicalPeople(this.ctx)
         this.enemiesOneArr.push(newEnemy)
+        zombieMp3.play()
       }
 
       if (this.tick % 500 === 0) {
         const newEnemy2 = new SpiderRad(this.ctx)
         this.enemiesTwoArr.push(newEnemy2)
+        spiderMp3.play()
       }
     }
 
     _addPowerUps() {
+      
       if (this.tick % 1000 === 0) {
         const lifeUpItem = new LifeUp(ctx)
         this.powerUpsArr.push(lifeUpItem)
-        console.log(this.powerUpsArr)
+        powerUpMp3.play()
       }
 
       if (this.tick % 2000 === 0) {
         const lifeUpBigItem = new LifeUpBig(ctx)
         this.powerUpsArr.push(lifeUpBigItem)
+        powerUpMp3.play()
       }
 
       if (this.tick % 800 === 0) {
         const coinItem = new Coins(ctx)
         this.powerUpsArr.push(coinItem)
+        powerUpMp3.play()
       }
 
       if (this.tick % 2000 === 0) {
         const speedItem = new SpeedUp(ctx)
         this.powerUpsArr.push(speedItem)
+        powerUpMp3.play()
       }
 
     }
@@ -188,7 +194,7 @@ class Game {
         return this.enemiesOneArr.some(el => {
           if (el.collide(player)) {
             player.health -= 0.5
-           
+            ouchMp3.play()
             const healthProgress = Array.from(HEALTHS)
             healthProgress[player.playerNum -1].value = player.health
             
@@ -200,7 +206,7 @@ class Game {
         return this.enemiesTwoArr.some(el => {
           if (el.collide(player)) {
             player.health -= 0.5
-           
+            ouchMp3.play()
             const healthProgress = Array.from(HEALTHS)
             healthProgress[player.playerNum -1].value = player.health
             
@@ -212,6 +218,7 @@ class Game {
         this.powerUpsArr.forEach(powerUp =>{
           if(powerUp.collide(player)) {
             powerUp.power(player)
+            coinsMp3.play()
             const healthProgress = Array.from(HEALTHS)
             healthProgress[player.playerNum -1].value = player.health
             const scoresParagraphs = Array.from(SCORES)
@@ -233,18 +240,22 @@ class Game {
             if(!player.takeWaste) {
               const index = this.wastedEl.indexOf(el)
               if (index > -1) { this.wastedEl.splice(index, 1) }
+              digMp3.play()
               player.takeWaste = true
             }
 
             if (player.takeWaste && (player.playerNum === 1)) {
               player.img.src = './img/Spritesheet_P1_Con.png'
+              
             }
             if (player.takeWaste && (player.playerNum === 2)) {
               player.img.src = './img/Spritesheet_P2_Con.png'
+              
             }
   
             if (player.takeWaste) {
               player.health -= 0.1
+              geigerMp3.play()
               
               const healthProgress = Array.from(HEALTHS)
               healthProgress[player.playerNum -1].value = player.health
@@ -256,13 +267,7 @@ class Game {
       })
     }
 
-    _checkCollisionsWithEnemies() {
-
-    
       
-    }
-    
-    
     _wasteInNucleus() {
       
       this.players.forEach(player => {
@@ -275,9 +280,14 @@ class Game {
           player.wasteClear += 1
           if (!player.takeWaste && (player.playerNum === 1)) {
             player.img.src = './img/Spritesheet_P1_Sin.png'
+            leaveWasteMp3.play()
           }
           if (!player.takeWaste && (player.playerNum === 2)) {
             player.img.src = './img/Spritesheet_P2_Sin.png'
+            leaveWasteMp3.play()
+          }
+          if (!this.wastedEl.length) {
+            returnSafeMp3.play()
           }
           return true
         }
@@ -317,7 +327,21 @@ class Game {
           }
         })
 
+        if (this.time === 15) {
+          const timeOut = setInterval(() => {
+            redAlert.classList.toggle('red-alert')
+          }, 1000)
+
+          setTimeout(() => {
+            clearInterval(timeOut)
+          },15000);
+          returnSafeMp3.play()
+          return timeOut
+          
+        }
+
         if (this.time === 0) {
+         
           this._gameOver()
         }
        
@@ -359,7 +383,8 @@ class Game {
       const restButton = document.querySelector('.restart')
 
       winLose.innerText = 'GAME OVER'
-      
+      gameOverMp3.play()
+      bgMusic.pause()
 
       if (this.players.length === 1) {
         p1Score.innerText = `Player 1 Score: ${this.players[0].score}`
@@ -374,6 +399,7 @@ class Game {
           const safeZone = (player.x + player.w ) >= this.ctx.canvas.width
   
           if(!this.wastedEl.length && safeZone && !player.takeWaste) {
+            P1WinMp3.play()
             winLose.innerText = `YOU WIN!!!`
             document.querySelector('#timer').textContent = '0'
           }  
@@ -399,15 +425,20 @@ class Game {
         const logicDraw = (this.players[0].score) === (this.players[1].score)
 
 
-        if(logicWin1) {
-          winLose.innerText = `PLAYER 1 WIN!!!`
-          document.querySelector('#timer').textContent = '0'
+        if( this.wastedEl && this.time === 0) {
+          winLose.innerText = `GAME OVER`
+          
         } else if(logicWin2) {
+          P2WinMp3.play()
           winLose.innerText = `PLAYER 2 WIN!!!` 
           document.querySelector('#timer').textContent = '0'
-          } else if (logicDraw){ 
-
+        } else if (logicDraw){ 
+          drawMp3.play()
           winLose.innerText = `DRAW!!!`
+          document.querySelector('#timer').textContent = '0'
+        } else if (logicWin1) {
+          P1WinMp3.play()
+          winLose.innerText = `PLAYER 1 WIN!!!`
           document.querySelector('#timer').textContent = '0'
         }
     
