@@ -1,6 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
 
 
+progress[value]::-webkit-progress-bar {
+    background-color: #eee;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
 
 body {
     margin: 0 auto;
@@ -15,10 +20,8 @@ body {
     background-color: black;
     position: absolute;
     z-index: 3;
-    width: 1250px;
+    width: 70%;
     height: 800px;
-    top: 9%;
-    left: 14%;
 }
 .instructions {
     background-color: black;
@@ -26,9 +29,30 @@ body {
     position: absolute;
     z-index: 4;
     width: 1250px;
-    height: 800px;
+    height: 850px;
     top: 9%;
     left: 14%;
+    font-size: 24px;
+    padding: 0 32px 0 32px;
+}
+
+.instructions-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.instruction-element-container {
+    display: flex;
+    justify-content: flex-start;
+}
+.instruction-element-container img {
+    width: 10%;
+    height: 5%;
+}
+
+.instruction-element-container p {
+    padding-left: 20px;
 }
 
 .menu h1 {
@@ -146,6 +170,25 @@ button:hover {
     padding-top: 20px;;
 }
 
+progress[value] {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+progress[value]::-webkit-progress-bar {
+    background-color: black;
+    border-radius: 2px;
+    box-shadow: 0px 0px 5px 3px rgba(104, 255, 0, 1) inset;
+}
+
+progress[value]::-webkit-progress-value {
+    background-color: rgb(104, 255, 0);;
+}
+
+label {
+    padding-bottom: 10px;
+}
+
 #waste-counter {
     display: flex;
     align-items: center;
@@ -173,7 +216,6 @@ button:hover {
     color: rgb(104, 255, 0);
     position: absolute;
     z-index: 3;
-    top: 10%;
     left: 16%;
 
 }

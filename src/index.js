@@ -5,9 +5,11 @@ const game = new Game(ctx, 3, 30)
 const menu = document.querySelector('.menu')
 const start1btn = document.querySelector('#start-1')
 const start2btn = document.querySelector('#start-2')
+const instructBtn = document.querySelector('#instruct-btn')
+const instructPage = document.querySelector('.instructions')
+const instToMenu = document.querySelector('.inst-to-menu')
 const takeReady = document.querySelector('#count-down > p')
 const twoPlayers = document.querySelector('#player-2')
-console.log(twoPlayers)
 
 start1btn.addEventListener('click', () => {
 
@@ -76,4 +78,12 @@ start2btn.addEventListener('click', () => {
         game.gameTimer()
     }, 4000)
     
+})
+
+instructBtn.addEventListener('click', () => {
+    instructPage.classList.toggle('is-hidden')
+})
+
+instToMenu.addEventListener('click', () => {
+    instructPage.classList.toggle('is-hidden')
 })
