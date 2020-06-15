@@ -163,7 +163,7 @@ class Game {
         powerUpMp3.play()
       }
 
-      if (this.tick % 2000 === 0) {
+      if (this.tick % 800 === 0) {
         const speedItem = new SpeedUp(ctx)
         this.powerUpsArr.push(speedItem)
         powerUpMp3.play()

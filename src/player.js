@@ -42,8 +42,8 @@ class Player {
           this.h
       )
       if (this.actions.up || this.actions.down || this.actions.left || this.actions.right) this.animate()
-      
   }
+  
   move() {
     document.addEventListener('keydown', e => {
       switch (e.keyCode) {
