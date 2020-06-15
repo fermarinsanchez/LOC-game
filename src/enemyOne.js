@@ -2,8 +2,7 @@ class ChemicalPeople {
     constructor(ctx) {
         this.ctx = ctx
         
-        this.x = Math.floor(Math.random() * (this.ctx.canvas.width - 300)) 
-        console.log(this.x)
+        this.x = Math.floor(Math.random() * (this.ctx.canvas.width - 300)) + 100
         this.y = 100
 
         this.w = 50

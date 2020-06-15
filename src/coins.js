@@ -5,7 +5,7 @@ class Coins extends PowerUp {
     }
 
     power(el) {
-        // this._helpAudio.play();
+      
         el.score += 25
     }
 

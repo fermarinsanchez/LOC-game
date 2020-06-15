@@ -1,6 +1,7 @@
 const ctx = document.getElementById('canvas').getContext('2d')
 
-const game = new Game(ctx, 3, 30)
+const game1P = new Game(ctx, 30, 150)
+const game2P = new Game(ctx, 50, 150)
 
 const menu = document.querySelector('.menu')
 const start1btn = document.querySelector('#start-1')
@@ -38,9 +39,9 @@ start1btn.addEventListener('click', () => {
         clearInterval(third)
         takeReady.innerText = ''
         takeReady.classList.toggle('ready')
-        game._addOnePlayer()
-        game.start()
-        game.gameTimer()
+        game1P._addOnePlayer()
+        game1P.start()
+        game1P.gameTimer()
     }, 4000)
     
 })
@@ -73,9 +74,9 @@ start2btn.addEventListener('click', () => {
         takeReady.innerText = ''
         takeReady.classList.toggle('ready')
         twoPlayers.classList.toggle('is-hidden')
-        game._addTwoPlayers()
-        game.start()
-        game.gameTimer()
+        game2P._addTwoPlayers()
+        game2P.start()
+        game2P.gameTimer()
     }, 4000)
     
 })

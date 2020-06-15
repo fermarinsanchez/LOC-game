@@ -9,7 +9,8 @@ class PowerUp {
         this.h = h;
         this.x = Math.floor(Math.random() * 650 ) + 55
         this.y = Math.floor(Math.random() * 650 ) + 55
-        // this._helpAudio = document.getElementById('help');
+        
+        this.tick = 0
     }
 
     draw() {
@@ -20,6 +21,23 @@ class PowerUp {
             this.w, 
             this.h
         );
+        if (!(this.tick++ % 10)){
+            this.move();
+        }
+
+        if (this.tick > 100) {
+            this.tick = 0
+        }
+    }
+
+    move() {
+        if (this.y % 2) {
+            this.y += 5;
+        } else {
+            this.y -= 5;
+        }
+
+        
     }
 
     collide(el) {

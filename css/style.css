@@ -108,10 +108,15 @@ button {
     border: 0;
     padding: 10px 30px;
     background-color: rgba(0, 0, 0, 0);
+    cursor: ;
 }
 
 button:hover {
     color: #eb3933;
+}
+
+button:focus {
+    outline: 0;
 }
 
 .credits {

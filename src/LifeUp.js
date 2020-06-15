@@ -5,7 +5,7 @@ class LifeUp extends PowerUp {
     }
 
     power(el) {
-        // this._helpAudio.play();
+        
         if (el.health >= 100) {
             el.health = 100
         }

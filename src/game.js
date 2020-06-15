@@ -18,12 +18,12 @@ class Game {
       this.skullsArr = []
       this.powerUpsArr = []
 
-      this.skullImg = new Image()
-      this.skullImg.src = './img/player_dead.png'
 
       this.score = 0
       this.time = time
       this.stillAlive = 2
+
+      this.round = 0
       
       this._addWaste(this.waste, this.wasteNum)
     }
@@ -51,7 +51,7 @@ class Game {
 
   
     _draw() {
-      if (this.tick++ > 100000) {
+      if (this.tick++ > 2000) {
         this.tick = 0
       }
       this.bg.draw()
@@ -62,7 +62,7 @@ class Game {
       this.powerUpsArr.forEach(el => el.draw())
       this.players.forEach(player => {
         if (player.itsAlive) {
-          setTimeout(player.draw(), 2000)
+          setTimeout(player.draw(), 5000)
         } else { null }
       })
       this.nucleus.draw()
@@ -93,16 +93,16 @@ class Game {
     
     _addOnePlayer() {
       this.players.push(new Player(ctx, 1))
-      const healthRounded1 = Math.floor(this.players[0].health)
-      healthOne.value =  `${healthRounded1}`
+      // const healthRounded1 = Math.floor(this.players[0].health)
+      // healthOne.value =  `${healthRounded1}`
     }
 
     _addTwoPlayers() {
       this.players.push(new Player(ctx,1), new Player2(ctx, 2))
-      const healthRounded1 = Math.floor(this.players[0].health)
-      const healthRounded2 = Math.floor(this.players[1].health)
-      healthOne.value =  `${healthRounded1}`
-      healthTwo.value =  `${healthRounded2}`
+      // const healthRounded1 = Math.floor(this.players[0].health)
+      // const healthRounded2 = Math.floor(this.players[1].health)
+      // healthOne.value =  `${healthRounded1}`
+      // healthTwo.value =  `${healthRounded2}`
 
     }
 
@@ -121,11 +121,26 @@ class Game {
         zombieMp3.play()
       }
 
-      if (this.tick % 500 === 0) {
+      if (this.tick % 250 === 0) {
         const newEnemy2 = new SpiderRad(this.ctx)
         this.enemiesTwoArr.push(newEnemy2)
         spiderMp3.play()
       }
+
+      this.enemiesOneArr.forEach(el => {
+        if (el.y > 1000) {
+          const index = this.enemiesOneArr.indexOf(el)
+          if (index > -1) { this.enemiesOneArr.splice(index, 1) }
+        }
+      })
+
+      this.enemiesTwoArr.forEach(el => {
+        if (el.x < 0) {
+          const index = this.enemiesTwoArr.indexOf(el)
+          if (index > -1) { this.enemiesTwoArr.splice(index, 1) }
+
+        }
+      })
     }
 
     _addPowerUps() {
@@ -152,8 +167,10 @@ class Game {
         const speedItem = new SpeedUp(ctx)
         this.powerUpsArr.push(speedItem)
         powerUpMp3.play()
-      }
+        this.tick = 0
+        console.log(this.tick)
 
+      }
     }
 
     _stopPlayer(player, wall) {
@@ -307,7 +324,7 @@ class Game {
         if (this.players.length === 1) {
           if ( healthOne.value <= 0) {
             clearInterval(countdownTimer)
-            setInterval(this._gameOver(), 2000)
+            setInterval(this._gameOver(), 5000)
           }
          
         }
@@ -315,7 +332,7 @@ class Game {
         if ( this.players.length === 2) {
           if((healthOne.value <= 0 && healthTwo.value <= 0)) {
             clearInterval(countdownTimer)
-            setInterval(this._gameOver(), 2000)
+            setInterval(this._gameOver(), 5000)
           }
         }
 
