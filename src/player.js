@@ -27,6 +27,7 @@ class Player {
         right: false
       }
       this.playerNum = playerNum
+      this.setListenners()
   }
   draw() {
     this.checkIfDead()
@@ -43,8 +44,7 @@ class Player {
       )
       if (this.actions.up || this.actions.down || this.actions.left || this.actions.right) this.animate()
   }
-  
-  move() {
+  setListenners() {
     document.addEventListener('keydown', e => {
       switch (e.keyCode) {
         case KEY_UP:
@@ -74,36 +74,56 @@ class Player {
       }
     })
     document.addEventListener('keyup', e => {
-        switch (e.keyCode) {
-            case KEY_UP:
-              this.actions.up = false
-              this.vy = 0
-              break;
-            case KEY_LEFT:
-              this.actions.left = false
-              this.vx = 0
-              break;
-            case KEY_RIGHT:
-              this.actions.right = false
-              this.vx = 0
-              break;
-            case KEY_DOWN:
-              this.actions.down = false
-              this.vy = 0
-              break;
-          }
+      switch (e.keyCode) {
+          case KEY_UP:
+            this.actions.up = false
+            this.vy = 0
+            break;
+          case KEY_LEFT:
+            this.actions.left = false
+            this.vx = 0
+            break;
+          case KEY_RIGHT:
+            this.actions.right = false
+            this.vx = 0
+            break;
+          case KEY_DOWN:
+            this.actions.down = false
+            this.vy = 0
+            break;
+        }
     })
+  }
+  move() {
+    if (this.actions.up) {
+        this.vy = -this.v
+        this.img.stayIndex = 3
+        walkMp3.play()
+    } 
+    if (this.actions.left) {
+        this.vx = -this.v
+        this.img.stayIndex = 2
+        walkMp3.play()
+    }
+    if (this.actions.right) {
+        this.vx = this.v
+        this.img.stayIndex = 1
+        walkMp3.play()
+    }
+    if (this.actions.down) {
+        this.vy = this.v
+        this.img.stayIndex = 0
+        walkMp3.play()
+    }
       this.x += this.vx
       this.y += this.vy
   }
-
   checkIfDead() {
     if (this.health <= 0) {
       this.img.src = './img/Spritesheet_skull.png'
       deadMp3.play()
     }
   }
-
   animate() {
     if (this.tick++ > 5) {
       this.tick = 0;
@@ -112,12 +132,10 @@ class Player {
     if (this.img.frameIndex >= this.img.frames - 1) {
       this.img.frameIndex = 0;
     }
-}
-
+  }
   collide(el) {
     const collideX = el.x + el.w > this.x && el.x < this.x + this.w
     const collideY = el.y < this.y + this.h && el.y + el.h > this.y
     return  collideX && collideY     
+  }
 }
-}
-

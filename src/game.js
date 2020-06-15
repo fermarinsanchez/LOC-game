@@ -51,7 +51,7 @@ class Game {
 
   
     _draw() {
-      if (this.tick++ > 2000) {
+      if (this.tick++ > 5000) {
         this.tick = 0
       }
       this.bg.draw()
@@ -145,13 +145,13 @@ class Game {
 
     _addPowerUps() {
       
-      if (this.tick % 1000 === 0) {
+      if (this.tick % 600 === 0) {
         const lifeUpItem = new LifeUp(ctx)
         this.powerUpsArr.push(lifeUpItem)
         powerUpMp3.play()
       }
 
-      if (this.tick % 2000 === 0) {
+      if (this.tick % 900 === 0) {
         const lifeUpBigItem = new LifeUpBig(ctx)
         this.powerUpsArr.push(lifeUpBigItem)
         powerUpMp3.play()
@@ -168,8 +168,6 @@ class Game {
         this.powerUpsArr.push(speedItem)
         powerUpMp3.play()
         this.tick = 0
-        console.log(this.tick)
-
       }
     }
 

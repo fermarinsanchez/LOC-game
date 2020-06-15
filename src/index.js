@@ -1,7 +1,7 @@
 const ctx = document.getElementById('canvas').getContext('2d')
 
-const game1P = new Game(ctx, 15, 60)
-const game2P = new Game(ctx, 35, 90)
+const game1P = new Game(ctx, 25, 100)
+const game2P = new Game(ctx, 35, 120)
 
 const menu = document.querySelector('.menu')
 const start1btn = document.querySelector('#start-1')
